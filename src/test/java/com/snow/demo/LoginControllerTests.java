@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,8 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class LoginControllerTests {
 
-    private static final String adminJws =
-            "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIn0.e0r24A4Xexy0xxpB8RLeWkiZO56-hnjaQxIpwpkxEDw";
     @Autowired
     MockMvc mockMvc;
 
@@ -29,22 +26,7 @@ public class LoginControllerTests {
     }
 
     @Test
-    public void test2() throws Exception {
-        String result = mockMvc.perform(
-                    post("/login")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content("{\"username\":\"admin\",\"password\":\"admin\"}")
-                )
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse().getContentAsString();
-
-        assertNotNull(result);
-    }
-
-    @Test
-    public void test3() throws Exception {
+    public void loginAndAuthTest() throws Exception {
         String token = mockMvc.perform(
                         post("/login")
                                 .with(csrf())
@@ -63,6 +45,6 @@ public class LoginControllerTests {
                 .getResponse()
                 .getContentAsString();
 
-        assertEquals("hello", result);
+        assertEquals("hello admin", result);
     }
 }
