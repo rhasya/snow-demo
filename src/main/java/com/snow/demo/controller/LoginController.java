@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.util.Map;
 
 @RestController
@@ -25,7 +29,7 @@ public class LoginController {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private JwtProcessor jwtProcessor;
+    private JwtEncoder encoder;
 
     @GetMapping("/test")
     public String test() {
@@ -55,6 +59,16 @@ public class LoginController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        return jwtProcessor.encodeJwt(username);
+        Instant now = Instant.now();
+
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(now)
+                .expiresAt(now.plusSeconds(36000))
+                .subject("admin")
+                .claim("scope", "ADMIN")
+                .build();
+
+        return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }
