@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -57,8 +56,9 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.withUsername("admin").password("admin").roles("ADMIN").build();
+        UserDetails user = User.withUsername("user").password("user1").roles("USER").build();
 
-        return new InMemoryUserDetailsManager(admin);
+        return new InMemoryUserDetailsManager(admin, user);
     }
 
     @Bean
@@ -68,14 +68,6 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtEncoder jwtEncoder() {
-//        String s = "+gCetdQxay+TYMfDHpoINQK3cY1vBVY0mPfgA0xU4Vs=";
-//
-//        SecretKey secretKey = new SecretKeySpec(Base64Utils.decodeFromString(s), "NONE");
-//        JWK key = new OctetSequenceKey.Builder(secretKey)
-//                .algorithm(JWSAlgorithm.HS256)
-//                .keyID("key`")
-//                .build();
-
         JWK key = new RSAKey.Builder(pubKey).privateKey(privKey).build();
         JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(key));
         return new NimbusJwtEncoder(jwkSource);

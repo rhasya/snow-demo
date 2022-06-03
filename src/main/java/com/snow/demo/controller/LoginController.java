@@ -3,9 +3,7 @@ package com.snow.demo.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,26 +43,26 @@ public class LoginController {
         String password = model.get("password");
 
         if (!StringUtils.hasLength(username)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용자명을 입력하십시오.");
         }
         if (!StringUtils.hasLength(password)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "패스워드를 입력하십시오.");
         }
 
-        UserDetails targetUser;
+        UserDetails user;
         try {
-            targetUser = userDetailsService.loadUserByUsername(username);
+            user = userDetailsService.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자를 찾을 수 없습니다.");
         }
 
-        if (!targetUser.getPassword().equals(password)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        if (!user.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "비밀번호가 잘못되었습니다.");
         }
 
         Instant now = Instant.now();
 
-        String scope = targetUser.getAuthorities().stream()
+        String scope = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
 
@@ -72,7 +70,7 @@ public class LoginController {
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(36000))
-                .subject(targetUser.getUsername())
+                .subject(user.getUsername())
                 .claim("scope", scope)
                 .build();
 

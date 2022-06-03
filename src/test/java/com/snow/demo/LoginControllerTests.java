@@ -17,8 +17,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class LoginControllerTests {
 
-    @Autowired
-    MockMvc mockMvc;
+    private final MockMvc mockMvc;
+
+    LoginControllerTests(@Autowired MockMvc mockMvc) {
+        this.mockMvc = mockMvc;
+    }
 
     @Test
     public void test1() throws Exception {
@@ -26,7 +29,7 @@ public class LoginControllerTests {
     }
 
     @Test
-    public void loginAndAuthTest() throws Exception {
+    public void adminLoginTest() throws Exception {
         String token = mockMvc.perform(
                         post("/login")
                                 .with(csrf())
@@ -46,5 +49,46 @@ public class LoginControllerTests {
                 .getContentAsString();
 
         assertEquals("hello admin", result);
+    }
+
+    @Test
+    public void wrongUser() throws Exception {
+        mockMvc.perform(post("/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"user99\",\"password\":\"user99\"}")
+        ).andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void wrongPassword() throws Exception {
+        mockMvc.perform(post("/login")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"admin\",\"password\":\"user99\"}")
+        ).andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void userLoginTest() throws Exception {
+        String token = mockMvc.perform(
+                        post("/login")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"username\":\"user\",\"password\":\"user1\"}")
+                )
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        String result = mockMvc
+                .perform(get("/api/hello")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals("hello user", result);
     }
 }
