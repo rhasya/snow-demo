@@ -75,7 +75,7 @@ public class LoginControllerTests {
                         post("/login")
                                 .with(csrf())
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"username\":\"user\",\"password\":\"user1\"}")
+                                .content("{\"username\":\"user1\",\"password\":\"user1\"}")
                 )
                 .andExpect(status().isOk())
                 .andReturn()
@@ -89,6 +89,6 @@ public class LoginControllerTests {
                 .getResponse()
                 .getContentAsString();
 
-        assertEquals("hello user", result);
+        assertEquals("hello user1", result);
     }
 }
