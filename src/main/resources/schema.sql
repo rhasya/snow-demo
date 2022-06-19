@@ -1,3 +1,5 @@
+create sequence HIBERNATE_SEQUENCE;
+
 create table USERS (
     id bigint primary key,
     username varchar(50) unique,
@@ -12,4 +14,8 @@ create table AUTHORITIES (
 );
 create unique index ix_auth_username on authorities (username,authority);
 
-create sequence HIBERNATE_SEQUENCE;
+create table PROBLEM (
+    id bigint primary key,
+    title varchar(255),
+    content varchar(5000)
+);
