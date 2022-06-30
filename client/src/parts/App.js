@@ -1,11 +1,11 @@
-import {Outlet} from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import MyNavbar from './MyNavbar';
 
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <div id="App" className="App">
       <MyNavbar/>
       <Outlet/>
     </div>

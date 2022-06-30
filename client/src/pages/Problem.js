@@ -24,11 +24,17 @@ function Problem() {
   }
 
   return (
-      <main id="problem" className="container">
-        <h3>{problem.id}. {problem.title}</h3>
-        <div><Link to="/problems">목록으로</Link></div>
+      <main id="problem" className="d-flex flex-row h-100">
+        <div id="problem-left" className="w-50 p-2 overflow-auto">
+          <h3>{problem.id}. {problem.title}</h3>
+          <div><Link to="/problems">목록으로</Link></div>
 
-        <div>{problem.content}</div>
+          <div>{problem.content}</div>
+        </div>
+        <div id="problem-right" className="w-50 p-2">
+          <textarea className="w-100 h-75"></textarea>
+          <button className="btn btn-primary">제출</button>
+        </div>
       </main>
   );
 }
