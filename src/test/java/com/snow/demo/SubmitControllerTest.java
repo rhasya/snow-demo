@@ -41,7 +41,7 @@ public class SubmitControllerTest {
         /* test */
         mockMvc.perform(post("/api/v1/submit-source")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(str)))
+                        .content(str))
             .andExpect(status().isOk());
     }
 }
