@@ -40,7 +40,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain config(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests(c -> c
-                        .antMatchers("/api/**").authenticated()
+                        .antMatchers("/api/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .exceptionHandling(c -> c

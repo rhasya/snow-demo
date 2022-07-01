@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 public class LoginController {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private UserDetailsService userDetailsService;
