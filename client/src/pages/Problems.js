@@ -18,7 +18,7 @@ function Row({id, title}) {
 
 function Problems() {
   return (
-    <main id="problem" className="container">
+    <main id="problems" className="container pt-2">
       <h1>문제들</h1>
       <table className="table">
         <thead>
