@@ -1,9 +1,10 @@
 package com.snow.demo.model;
 
-public class Source {
+public class SubmittedSource {
     private String username;
     private String lang;
     private String source;
+    private Long problemId;
 
     public String getUsername() {
         return username;
@@ -22,5 +23,11 @@ public class Source {
     }
     public void setSource(String source) {
         this.source = source;
+    }
+    public void setProblemId(Long problemId) {
+        this.problemId = problemId;
+    }
+    public Long getProblemId() {
+        return problemId;
     }
 }

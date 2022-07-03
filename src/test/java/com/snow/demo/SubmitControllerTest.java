@@ -1,7 +1,6 @@
 package com.snow.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.snow.demo.model.Source;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.FileInputStream;
+import java.util.Map;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SubmitControllerTest {
@@ -22,19 +24,24 @@ public class SubmitControllerTest {
     MockMvc mockMvc;
 
     @Test
-    @WithMockUser("user1")
+    @WithMockUser("snow")
     void testSubmitSource() throws Exception {
+        /* read test source */
+        String source;
+        try (FileInputStream fis = new FileInputStream("src/test/pythontest.txt")) {
+            source = new String(fis.readAllBytes());
+        }
+
         /* make test data */
         ObjectMapper mapper = new ObjectMapper();
-        Source s = new Source();
-        s.setUsername("snow");
-        s.setLang("cpp");
-        s.setSource("#include <cstdio>\nint main() {\n    printf(\"Hello World!\\\\n\");\n}");
+        String str = mapper.writeValueAsString(
+            Map.of("username", "snow", "lang", "python", "source", source)
+        );
 
         /* test */
         mockMvc.perform(post("/api/v1/submit-source")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(s)))
+                        .content(str))
             .andExpect(status().isOk());
     }
 }
