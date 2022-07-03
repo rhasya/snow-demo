@@ -6,6 +6,7 @@ import Nothing from './Nothing';
 import Home from '../pages/Home';
 import Problems from '../pages/Problems';
 import Problem from '../pages/Problem';
+import Results from '../pages/Results'
 
 function MyRouter() {
   return (
@@ -15,6 +16,7 @@ function MyRouter() {
           <Route index element={<Home />} />
           <Route path="problems" element={<Problems />} />
           <Route path="problem/:id" element={<Problem />} />
+          <Route path="results" element={<Results />} />
           <Route path="*" element={<Nothing />} />
         </Route>
       </Routes>
