@@ -38,3 +38,5 @@ out/
 
 ### Keys
 **/*.key
+**/resources/db/
+**/application-local.properties
