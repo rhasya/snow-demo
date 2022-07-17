@@ -24,4 +24,12 @@ public class ProblemControllerTest {
             .andExpect(content().contentType("application/json"))
             .andExpect(jsonPath("$").isArray());
     }
+
+    @Test
+    public void getProblemTest() throws Exception {
+        mockMvc.perform(get("/api/v1/problem/1"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json"))
+            .andExpect(jsonPath("$.title").value("Sample Problem"));
+    }
 }
