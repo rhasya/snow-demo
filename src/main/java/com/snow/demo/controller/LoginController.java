@@ -1,7 +1,9 @@
 package com.snow.demo.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.Instant;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,14 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @RestController
 public class LoginController {
-
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private UserDetailsService userDetailsService;

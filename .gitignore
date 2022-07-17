@@ -37,6 +37,6 @@ out/
 .vscode/
 
 ### Keys
-**/*.key
+**/resources/keys/
 **/resources/db/
 **/application-local.properties

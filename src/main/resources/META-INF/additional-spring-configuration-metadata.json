@@ -1,0 +1,12 @@
+{"properties": [
+    {
+        "name": "jwt.private.key",
+        "type": "java.lang.String",
+        "description": "RSA private key filename for JWT"
+    },
+    {
+        "name": "jwt.public.key",
+        "type": "java.lang.String",
+        "description": "RSA public key filename for JWT"
+    }
+]}
